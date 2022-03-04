@@ -1,13 +1,16 @@
 .headerContainer {
   height: 5rem;
   border-bottom: 1px solid var(--gray-800);
+  display: flex;
+  justify-content: space-between;
 }
 
 .headerContent {
   max-width: 1120px;
   height: 5rem;
-  padding: 0 2rem;
   margin: 0 auto;
+  padding: 0 2rem;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -51,5 +54,9 @@
         background: var(--yellow-500);
       }
     }
+  }
+
+  button {
+    margin-right: auto;
   }
 }

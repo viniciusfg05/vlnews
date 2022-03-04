@@ -8,12 +8,17 @@ export function Header() {
       <div className={styles.headerContent}>
         <img src="/logo.svg" alt="vl.News" /> 
         <nav>
-          <a href="#" className={styles.active}>Home</a>
-          <a href="#">Posts</a>
+            <div>
+              <a href="#" className={styles.active}>Home</a>
+              <a href="#">Posts</a>
+            </div>
+            
         </nav>
-        <SingInButton />
+        
       </div>
-      
+      <div>
+        <SingInButton />    
+      </div>
       
     </div>
   )

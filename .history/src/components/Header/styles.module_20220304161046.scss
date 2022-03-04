@@ -6,16 +6,19 @@
 .headerContent {
   max-width: 1120px;
   height: 5rem;
-  padding: 0 2rem;
   margin: 0 auto;
+  padding: 0 2rem;
+
   display: flex;
   align-items: center;
-  justify-content: space-between;
+
+  button {
+    justify-content: space-between;
+  }
 
   nav {
     margin-left: 5rem;
     height: 5rem;
-
     a {
       display: inline-block;
       position: relative;
