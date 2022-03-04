@@ -2,11 +2,9 @@ import Head from 'next/head'
 
 export default function Home() {
   return (
-    <>
-      <Head>
-        <title>Inicio | vl.news</title>
-      </Head>
+    <div>
       <h1>OLAAAAAAAA</h1>
-    </>
+      <title>Inicius | vl.news</title>
+    </div>
   )
 }
