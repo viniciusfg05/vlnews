@@ -1,4 +1,4 @@
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { SubscribeButtton } from '../components/subscribeButtton';
 import { stripe } from '../services/stripe';
@@ -37,7 +37,7 @@ export default function Home({product}: HomeProps) {
 }
 
 //carregamento ada API primeiro que a pagina em si
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   //
   const price = await stripe.prices.retrieve('price_1KaNxwF0aa4KZVxj1gsjE5Ya') /*, { //'retrieve - buscar uma só'
     expand: ['product'] //para buscar todas as informações do produto
@@ -54,6 +54,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   return {
     props: {
       product,
-    }
+    },
+    revalidate: 60 * 60 * 24,// 24 horas // quanto tempo eu quero que a pagina se atualizar e pegue as novas informações na api
   }
 }
