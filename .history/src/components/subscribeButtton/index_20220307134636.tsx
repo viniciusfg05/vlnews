@@ -11,11 +11,9 @@ export function SubscribeButtton(priceId: SubscribeButttonProps) {
 
   function HandleSubscrebe() {
     if(!session) {
-      signIn('github')
+      signIn()
       return;
-    } 
-
-    //criação da checkout session
+    }
   }
 
   return (

@@ -13,9 +13,7 @@ export function SubscribeButtton(priceId: SubscribeButttonProps) {
     if(!session) {
       signIn('github')
       return;
-    } 
-
-    //criação da checkout session
+    }
   }
 
   return (

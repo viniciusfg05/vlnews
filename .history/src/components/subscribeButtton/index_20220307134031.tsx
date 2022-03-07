@@ -1,4 +1,3 @@
-import { signIn, useSession } from 'next-auth/react';
 import styles from './styles.module.scss';
 
 interface SubscribeButttonProps {
@@ -6,16 +5,8 @@ interface SubscribeButttonProps {
 }
 
 export function SubscribeButtton(priceId: SubscribeButttonProps) {
-  //Saber se o usuario ja está logado
-  const {data: session} = useSession();
-
   function HandleSubscrebe() {
-    if(!session) {
-      signIn('github')
-      return;
-    } 
 
-    //criação da checkout session
   }
 
   return (

@@ -38,7 +38,7 @@ export default NextAuth({
               q.Collection('users'), //nome da collection 
               { data: { email } }
             ),
-            //se ele já existe trazer os dados
+            //se ele já existe 
             q.Get(
               q.Match(
                 q.Index('user-by-email'),

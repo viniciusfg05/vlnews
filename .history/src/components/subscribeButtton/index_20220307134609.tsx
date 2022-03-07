@@ -10,12 +10,7 @@ export function SubscribeButtton(priceId: SubscribeButttonProps) {
   const {data: session} = useSession();
 
   function HandleSubscrebe() {
-    if(!session) {
-      signIn('github')
-      return;
-    } 
-
-    //criação da checkout session
+    signIn()
   }
 
   return (
