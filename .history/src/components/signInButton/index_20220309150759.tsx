@@ -3,7 +3,7 @@ import { FaGithub } from "react-icons/fa";//yarn add react-icons
 import { FiX } from "react-icons/fi"
 import { signIn, signOut, useSession } from 'next-auth/react'
  
-//Para saber se o usuario está ativo ou nao 
+
 export function SingInButton() {
   //Vai retornas se o usuario tem uma sessão ativa ou não
   const { data: session } = useSession()

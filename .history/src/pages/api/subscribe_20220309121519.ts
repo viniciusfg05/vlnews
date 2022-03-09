@@ -8,9 +8,7 @@ type findUserLogadoUser = {
   ref: {
     id: string;
   },
-  data: {
-    stripe_customer_id: string;
-  }
+
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -18,9 +16,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       //criar o usuario em si
       const session = await getSession({ req });
 
+      const stripeCustomer = await stripe.customers.create({
+        email: session.user.email,
+        // metadata
+      })
 
+
+
+      //Evitar que cliente duplicado
       
-//Evitar que cliente duplicado {
+
       const findUserLogado = await fauna.query<findUserLogadoUser>(
         q.Get(
           q.Match(
@@ -29,34 +34,26 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           )
         )
       )
-      //variavel que pega os Id do customer
-      let customerId = findUserLogado.data.stripe_customer_id
       
-      if(!customerId) { //se ainda nao tem um custemer Id
-        const stripeCustomer = await stripe.customers.create({
-          email: session.user.email,
-          // metadata
-        })
+      let customerId = findUserLogado.data.stripe_customer_id
 
-        await fauna.query(
-          q.Update(
-            q.Ref(q.Collection('users'), findUserLogado.ref.id),
-            {
-               //Dados que eu quero atualizar
-               data: {
-                 stripe_customer_id: stripeCustomer.id
-               }
-            }
-          )
+      await fauna.query(
+        q.Update(
+          q.Ref(q.Collection('users'), findUserLogado.ref.id),
+          {
+             //Dados que eu quero atualizar
+             data: {
+               stripe_customer_id: stripeCustomer.id
+             }
+          }
         )
-      }
-// }
+      )
 
 
 
 
     const stripeCheckoutSession = await stripe.checkout.sessions.create({
-      customer: customerId, // Id do usuario; comprador
+      customer: stripeCustomer.id, // Id do usuario; comprador
       payment_method_types: ['card'], //metodo de pagamento
       billing_address_collection: 'required', //Endereço obrigatorio ou não
       line_items: [

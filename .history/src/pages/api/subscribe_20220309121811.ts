@@ -19,8 +19,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const session = await getSession({ req });
 
 
+
+
+
+      //Evitar que cliente duplicado
       
-//Evitar que cliente duplicado {
+
       const findUserLogado = await fauna.query<findUserLogadoUser>(
         q.Get(
           q.Match(
@@ -29,10 +33,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           )
         )
       )
+      
       //variavel que pega os Id do customer
       let customerId = findUserLogado.data.stripe_customer_id
       
-      if(!customerId) { //se ainda nao tem um custemer Id
+      if(!customerId) {
         const stripeCustomer = await stripe.customers.create({
           email: session.user.email,
           // metadata
@@ -50,13 +55,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           )
         )
       }
-// }
+
+
 
 
 
 
     const stripeCheckoutSession = await stripe.checkout.sessions.create({
-      customer: customerId, // Id do usuario; comprador
+      customer: stripeCustomer.id, // Id do usuario; comprador
       payment_method_types: ['card'], //metodo de pagamento
       billing_address_collection: 'required', //Endereço obrigatorio ou não
       line_items: [

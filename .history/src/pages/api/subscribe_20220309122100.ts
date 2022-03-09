@@ -18,8 +18,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       //criar o usuario em si
       const session = await getSession({ req });
 
-
-      
 //Evitar que cliente duplicado {
       const findUserLogado = await fauna.query<findUserLogadoUser>(
         q.Get(
@@ -51,6 +49,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         )
       }
 // }
+
 
 
 
