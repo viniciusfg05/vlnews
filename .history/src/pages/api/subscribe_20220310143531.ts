@@ -19,7 +19,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       
     const session = await getSession({ req });
 
+
+      
       //Evitar que cliente duplicado 
+
       // procurar o usuário logado 
       const findUserLogado = await fauna.query<findUserLogadoUser>(
         q.Get(
@@ -30,8 +33,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         )
       )
 
-
-      //variavel que pega os Id do customer, entao se o usuario ainda nao tem um id customer ai criamos um
+      
+      //variavel que pega os Id do customer
       let customerId = findUserLogado.data.stripe_customer_id
       
       if(!customerId) { //se ainda nao tem um custemer Id
@@ -51,8 +54,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             }
           )
         )
-
-        customerId = stripeCustomer.id
       }
 
     //Criando um checkout

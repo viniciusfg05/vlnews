@@ -19,8 +19,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       
     const session = await getSession({ req });
 
-      //Evitar que cliente duplicado 
-      // procurar o usuário logado 
+
+      
+      //Evitar que cliente duplicado {
       const findUserLogado = await fauna.query<findUserLogadoUser>(
         q.Get(
           q.Match(
@@ -29,9 +30,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           )
         )
       )
-
-
-      //variavel que pega os Id do customer, entao se o usuario ainda nao tem um id customer ai criamos um
+      //variavel que pega os Id do customer
       let customerId = findUserLogado.data.stripe_customer_id
       
       if(!customerId) { //se ainda nao tem um custemer Id
@@ -51,13 +50,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             }
           )
         )
-
-        customerId = stripeCustomer.id
       }
 
     //Criando um checkout
     const stripeCheckoutSession = await stripe.checkout.sessions.create({
-      customer: customerId, // Id do usuario; comprador //muito importante quem está comprando
+      customer: customerId, // Id do usuario; comprador
       payment_method_types: ['card'], //metodo de pagamento
       billing_address_collection: 'required', //Endereço obrigatorio ou não
       line_items: [
@@ -67,7 +64,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       mode: 'subscription', //pagamento mensal em assinatura
       allow_promotion_codes: true, //se aceita cupom de descontos
       success_url: process.env.STRIPE_SUCCESS_URL, // link de redirecionamento apos o pagamento 
-      cancel_url: process.env.STRIPE_CANCEL_URL //em variaveis ambiente
+      cancel_url: process.env.STRIPE_CANCEL_URL
     })
 
     return res.status(200).json({ sessionId: stripeCheckoutSession.id }) // se bem sucessido

@@ -23,9 +23,9 @@ export function SubscribeButtton(priceId: SubscribeButttonProps) {
 
       const { sessionId } = response.data; //pega a sessionId de response que retornamos de subscribe
 
-      const stripe = await getStripeJs() //chamando a api publica de stripe.js.ts
+      const stripe = await getStripeJs()
 
-      await stripe.redirectToCheckout({sessionId}) //redirecionar para o checkout passando o sessionId que criamos do api/subscribe
+      await stripe.redirectToCheckout({sessionId})
     }catch (err) {
       alert(err.message)
     }
