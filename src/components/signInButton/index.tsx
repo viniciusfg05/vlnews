@@ -28,6 +28,8 @@ export function SingInButton() {
 // STRIPE_SUCCESS_URL=http://localhost:3000/posts
 // STRIPE_CANCEL_URL=http://localhost:3000/
 
+// STRIPE_WEBHOOK_SECRET=whsec_59e9c0fb0c0e05d219a59ddb6a535bf2d363eac6456c4310370dfdea27b37cd6
+
 // GITHUB_CLIENT_ID=6b7885690cc4c2f85503
 // GITHUB_CLIENT_SECRET=1f64bdcce9200bd6465eaf296fe19dc71533898d
 
