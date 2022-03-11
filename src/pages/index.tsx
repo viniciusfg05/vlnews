@@ -1,4 +1,5 @@
 import { GetStaticProps } from 'next'
+
 import Head from 'next/head'
 import { SubscribeButtton } from '../components/subscribeButtton';
 import { stripe } from '../services/stripe';
@@ -36,12 +37,12 @@ export default function Home({product}: HomeProps) {
   )
 }
 
-//carregamento ada API primeiro que a pagina em si
+//carregamento da API primeiro que a pagina em si
 export const getStaticProps: GetStaticProps = async () => {
   //
   const price = await stripe.prices.retrieve('price_1KaNxwF0aa4KZVxj1gsjE5Ya') /*, { //'retrieve - buscar uma só'
     expand: ['product'] //para buscar todas as informações do produto
-  })*/
+  })*/ //entre parenteses "('price_1KaNxwF0aa4KZVxj1gsjE5Ya')" é a chave do preço 
 
   const product = {
     priceId: price.id,
