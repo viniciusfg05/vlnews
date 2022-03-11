@@ -12,20 +12,19 @@ export function SubscribeButtton(priceId: SubscribeButttonProps) {
   const {data: session} = useSession();
 
   async function HandleSubscrebe() {
-    //se nao estiver logado
     if(!session) {
       signIn('github')
       return;
     } 
     //criação da checkout session
     try {
-      const response = await api.post('/subscribe') //rota // nome do arquivo em pages/api/subscribe
+      const response = await api.post('/subscribe') //rota
 
-      const { sessionId } = response.data; //pega a sessionId de response que retornamos de subscribe
+      const { sessionId } = response.data; //id da sessao
 
-      const stripe = await getStripeJs() //chamando a api publica de stripe.js.ts
+      const stripe = await getStripeJs()
 
-      await stripe.redirectToCheckout({sessionId}) //redirecionar para o checkout passando o sessionId que criamos do api/subscribe
+      await stripe.redirectToCheckout({sessionId})
     }catch (err) {
       alert(err.message)
     }

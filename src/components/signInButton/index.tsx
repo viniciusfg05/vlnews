@@ -3,9 +3,8 @@ import { FaGithub } from "react-icons/fa";//yarn add react-icons
 import { FiX } from "react-icons/fi"
 import { signIn, signOut, useSession } from 'next-auth/react'
  
-//Para saber se o usuario está ativo ou nao 
+
 export function SingInButton() {
-  //Vai retornas se o usuario tem uma sessão ativa ou não
   const { data: session } = useSession()
 
   return session ? (
@@ -23,14 +22,13 @@ export function SingInButton() {
   );
 }
 
-
-
-
 // #Stripe
 // STRIPE_API_KEY=sk_test_51KaMv1F0aa4KZVxjGUEk1dxjod6HYqvIxTrGXAAtPXoGoSfyRuc51u7QFKbfsMsEl4qLJpWYxvQstHp24QmgkfTF00AqI0OplI
 // NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_51KaMv1F0aa4KZVxjEb9DVL9ZkjFOZ4TnuN3bnSIfG7yvCOAIxUFDIfMC7y6BijB1M8ddrGeixfIWrqv7W92BuKPE00guOHa2DG
 // STRIPE_SUCCESS_URL=http://localhost:3000/posts
 // STRIPE_CANCEL_URL=http://localhost:3000/
+
+// STRIPE_WEBHOOK_SECRET=whsec_59e9c0fb0c0e05d219a59ddb6a535bf2d363eac6456c4310370dfdea27b37cd6
 
 // GITHUB_CLIENT_ID=6b7885690cc4c2f85503
 // GITHUB_CLIENT_SECRET=1f64bdcce9200bd6465eaf296fe19dc71533898d

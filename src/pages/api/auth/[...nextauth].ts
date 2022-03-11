@@ -5,13 +5,12 @@ import GithubProvider from "next-auth/providers/github"
 import { fauna } from '../../../services/fauna'
 
 export default NextAuth({
-  //Autenticação com GitHub
+  // Configure one or more authentication providers
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
         authorization: {
-            //Quais informações eu quero ter acesso do usuario
             params: {
                 scope: 'read:user, user:email', 
             },
@@ -42,7 +41,7 @@ export default NextAuth({
             //se ele já existe trazer os dados
             q.Get(
               q.Match(
-                q.Index('user-by-email'),
+                q.Index('user-by-email'),   
                 q.Casefold(user.email)
               )
             )
@@ -58,4 +57,5 @@ export default NextAuth({
     },
   }
 })
+
 
