@@ -8,11 +8,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       //criar o usuario em si
       const session = await getSession({ req });
 
+      //cadastrando no stripe
       const stripeCustomer = await stripe.customers.create({
         email: session.user.email,
         // metadata
       })
-
 
     const stripeCheckoutSession = await stripe.checkout.sessions.create({
       customer: stripeCustomer.id, // Id do usuario; comprador
