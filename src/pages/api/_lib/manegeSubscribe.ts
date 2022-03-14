@@ -1,4 +1,5 @@
 import { query as q } from "faunadb";
+import { fauna } from "../../../services/fauna";
 
 export async function saveSubscription(
   subscriptionId: string,
@@ -7,7 +8,7 @@ export async function saveSubscription(
   //buscar o usuario no banco do fauna com id Custumer ID
   //Buscar a ref do usuario
   const useRef = await fauna.query(
-    q.select(
+    q.Select(
       "ref",
       q.Get(
         q.Match(
