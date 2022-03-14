@@ -29,42 +29,50 @@ export const config = {
 }
 
 //eventos relevantes 
-const relevantEvents = new Set(["checkout.session.completed"]);
+const relevantEvents = new Set([
+    "checkout.session.completed",
+    "customer.subscription.updated",
+    "customer.subscription.deleted",
+]);
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-    //verifica se o metodo é POST
-    if (req.method === 'POST') {
+    
+    if (req.method === 'POST') { //verifica se o metodo é POST
         const buf = await buffer(req) //todos os dados da requisição
-
-        //Usando a STRIPE_WEBHOOK_SECRET - vamos buscar os header da requisição e procura o cabeçalho stripe-singnature esse detalhes consta na documentação
-        const secret = req.headers['stripe-signature']
-
-        //vamos verificar agora se os valores que se encontra na variavel ambiente bate com os da requisição  //Depois de construido o evento, temos acessso a varias opções ao da "event."
-        let event: Stripe.Event; //eventos que vem do webhooks
+        const secret = req.headers['stripe-signature']//Usando a STRIPE_WEBHOOK_SECRET - vamos buscar os header da requisição e procura o cabeçalho stripe-singnature esse detalhes consta na documentação
+        let event: Stripe.Event; //eventos que vem do webhooks //vamos verificar agora se os valores que se encontra na variavel ambiente bate com os da requisição  //Depois de construido o evento, temos acessso a varias opções ao da "event."
 
         try {
             event = stripe.webhooks.constructEvent(buf, secret, process.env.STRIPE_WEBHOOK_SECRET) //vamos importar o de services/stripe o proprio stripe
-            //Se não bater os dados vamos...
-        } catch (err) {
+        } catch (err) {//Se não bater os dados vamos...
             return res.status(400).send(`Webhook error: ${err.message}`)
         }
 
-
         //Event type, retorna oq queremos que é  checkout.session.completed  retornado do webhook, mas antes temos que passar informa os eventos relevantes 
         const {type} = event
-
         if (relevantEvents.has(type)) {
             try{
                 switch (type) {
-                    case 'checkout.session.completed':
+                    //ouvindo outro eventos
+                    case "customer.subscription.updated":
+                    case "customer.subscription.deleted":
 
-                        const checkoutSession = event.data.object as Stripe.Checkout.Session
+                        const subscription = event.data.object as Stripe.Subscription; //entidade 
+                        await saveSubscription(
+                            subscription.id,
+                            subscription.customer.toString(),
+                            false, //serve para criar outro subscription apenas se for case created e checkout session
+                        )
+                        break;
+                    //ouvindo outro eventos
 
+                    case 'checkout.session.completed': //para começar a ouvir os eventos
+                        const checkoutSession = event.data.object as Stripe.Checkout.Session //entidade que estamos lidando é a Checkout Session
                         await saveSubscription(
                             checkoutSession.subscription.toString(),
                             checkoutSession.customer.toString(),
+                            true
                         )
-
                         break;
                     default:
                         throw new Error('Unchandled event')
