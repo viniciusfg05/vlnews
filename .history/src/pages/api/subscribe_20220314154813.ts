@@ -29,7 +29,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         )
       )
 
-      //IF PARA EVITAR DUPLICIDADE NO CADASTRO DE CLIENTES
       let customerId = user.data.stripe_customer_id
 
       if(!customerId) {
