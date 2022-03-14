@@ -70,7 +70,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         throw new Error('Unchandled event')
                 }
             } catch (err) {
-                return res.json({error: 'Webhook handler failed.'})
+               console.log(err)
             }
         }
        
