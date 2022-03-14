@@ -1,9 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import {query as q} from 'faunadb'
 import { stripe } from '../../services/stripe'
 import { getSession } from 'next-auth/react'; //serve para pegar os coockies
+import { query as q } from "faunadb";
 import { fauna } from "../../services/fauna";
-
 
 type User = {
   ref: {
@@ -16,14 +15,13 @@ type User = {
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
-    //criar o usuario em si
-    const session = await getSession({ req });
-    //cadastrando no stripe
-    const stripeCustomer = await stripe.customers.create({
-      email: session.user.email,
-      // metadata
-    })
-    
+      //criar o usuario em si
+      const session = await getSession({ req });
+
+      const stripeCustomer = await stripe.customers.create({
+        email: session.user.email,
+        // metadata
+      })
 
       const user = await fauna.query<User>(
         q.Get(

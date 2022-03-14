@@ -53,7 +53,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         //Event type, retorna oq queremos que é  checkout.session.completed  retornado do webhook, mas antes temos que passar informa os eventos relevantes 
         const {type} = event
 
-        if (relevantEvents.has(type)) {
+        if (!relevantEvents.has(type)) {
             try{
                 switch (type) {
                     case 'checkout.session.completed':

@@ -1,42 +1,33 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import {query as q} from 'faunadb'
 import { stripe } from '../../services/stripe'
 import { getSession } from 'next-auth/react'; //serve para pegar os coockies
+import { query as q } from "faunadb";
 import { fauna } from "../../services/fauna";
 
 
-type User = {
-  ref: {
-      id: string;
-  },
-  data: {
-      stripe_customer_id: string;
-  }
-}
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
-    //criar o usuario em si
-    const session = await getSession({ req });
-    //cadastrando no stripe
-    const stripeCustomer = await stripe.customers.create({
-      email: session.user.email,
-      // metadata
-    })
-    
+      //criar o usuario em si
+      const session = await getSession({ req });
 
-      const user = await fauna.query<User>(
+      const stripeCustomer = await stripe.customers.create({
+        email: session.user.email,
+        // metadata
+      })
+
+      const user = await fauna.query(
         q.Get(
           q.Match(
-            q.Index('user-by-email'),
+            q.index('user-by-email'),
             q.Casefold(session.user.email)
           )
         )
       )
 
-      await fauna.query(
+      await fauna.Update(
         q.Update(
-          q.Ref(q.Collection('users'), user.ref.id),
+          q.Ref(q.Colletion('users'), user.ref.id),
           {
             data: {
               stripe_customer_id: stripeCustomer.id

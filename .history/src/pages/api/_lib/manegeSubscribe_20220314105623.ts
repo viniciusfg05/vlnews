@@ -1,9 +1,6 @@
 import { query as q } from "faunadb";
 import { fauna } from "../../../services/fauna";
-<<<<<<< HEAD
-=======
 import { stripe } from "../../../services/stripe";
->>>>>>> d40ecba8653144a6d034429dc6d366c21eef06f5
 
 export async function saveSubscription(subscriptionId: string, customerId: string) {
   //buscar o usuario no banco do fauna com id Custumer ID
@@ -31,8 +28,6 @@ export async function saveSubscription(subscriptionId: string, customerId: strin
     status: subscription.status,
     price_id: subscription.items.data[0].price.id, //data[0] -- pegar o id do primeiro intem
   }
-
-  console.log(subscription)
 
   //salvar os dados da subscription no faunaDB
   await fauna.query(
