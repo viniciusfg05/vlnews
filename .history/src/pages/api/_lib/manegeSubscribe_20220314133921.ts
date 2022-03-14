@@ -29,7 +29,7 @@ export async function saveSubscription(subscriptionId: string, customerId: strin
     price_id: subscription.items.data[0].price.id, //data[0] -- pegar o id do primeiro intem
   }
 
-  console.log(subscription)
+  console.log(subscriptionData)
 
   //salvar os dados da subscription no faunaDB
   await fauna.query(

@@ -23,7 +23,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         // metadata
       })
 
-      const user = await fauna.query<User>(
+      const user = await fauna.query(
         q.Get(
           q.Match(
             q.Index('user-by-email'),

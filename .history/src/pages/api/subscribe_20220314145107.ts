@@ -5,11 +5,8 @@ import { query as q } from "faunadb";
 import { fauna } from "../../services/fauna";
 
 type User = {
-  ref: {
-      id: string;
-  },
-  data: {
-      stripe_customer_id: string;
+  ref {
+    id: string;
   }
 }
 
@@ -23,7 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         // metadata
       })
 
-      const user = await fauna.query<User>(
+      const user = await fauna.query(
         q.Get(
           q.Match(
             q.Index('user-by-email'),
