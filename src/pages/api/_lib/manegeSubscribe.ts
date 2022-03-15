@@ -16,11 +16,8 @@ export async function saveSubscription(subscriptionId: string, customerId: strin
       )
     )
   )
-
   //buscando todos os dados da subscription
   const subscription = await stripe.subscriptions.retrieve(subscriptionId)
-
-
   //Informando os dados do subscription que eu quero salvar
   const subscriptionData = {
     id: subscription.id,
@@ -28,9 +25,6 @@ export async function saveSubscription(subscriptionId: string, customerId: strin
     status: subscription.status,
     price_id: subscription.items.data[0].price.id, //data[0] -- pegar o id do primeiro intem
   }
-
-  console.log(subscription)
-
   //salvar os dados da subscription no faunaDB
   await fauna.query(
     q.Create(

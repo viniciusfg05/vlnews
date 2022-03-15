@@ -35,10 +35,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     //verifica se o metodo é POST
     if (req.method === 'POST') {
         const buf = await buffer(req) //todos os dados da requisição
-
         //Usando a STRIPE_WEBHOOK_SECRET - vamos buscar os header da requisição e procura o cabeçalho stripe-singnature esse detalhes consta na documentação
         const secret = req.headers['stripe-signature']
-
         //vamos verificar agora se os valores que se encontra na variavel ambiente bate com os da requisição  //Depois de construido o evento, temos acessso a varias opções ao da "event."
         let event: Stripe.Event; //eventos que vem do webhooks
 
