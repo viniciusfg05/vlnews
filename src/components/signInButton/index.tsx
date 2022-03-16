@@ -37,3 +37,4 @@ export function SingInButton() {
 
 // #PRISMIC
 // PRISMIC_ACCESS_TOKEN=MC5ZaV9aWmhFQUFDa0FqSlJP.77-9VQnvv73vv73vv71nQzUR77-977-977-977-977-9K07vv73vv70KbnAR77-9Qe-_ve-_vQx_He-_ve-_vQ
+// PRISMIC_END_POINT=https://vlnews.prismic.io/api/v2
