@@ -15,13 +15,7 @@ interface PostProps {
 
 export default function Post({ post }: PostProps) {
   return(
-    <>
-      <article>
-        <h1>{post.title}</h1>
-        <time>{post.updatedAt}</time>
-        <div dangerouslySetInnerHTML={{ __html: post.content }}/>
-      </article>
-    </>
+    <h1>trest</h1>
   )
 }
 
@@ -35,7 +29,7 @@ export const  getServerSideProps: GetServerSideProps = async ({ req, params }) =
 
   const prismic = getPrismicClient(req)
 
-  const response = await prismic.getByUID<any>('posts', String(slug), {})
+  const response = await prismic.getByUID<any>('publication', String(slug), {})
 
   const post = {
     slug,

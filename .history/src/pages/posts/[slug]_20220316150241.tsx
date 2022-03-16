@@ -4,24 +4,9 @@ import { RichText } from 'prismic-dom'
 import { getPrismicClient } from '../../services/prismic'
 
 
-interface PostProps {
-  post: {
-    slug: string;
-    title: string;
-    content: string;
-    updatedAt: string;
-  }
-}
-
-export default function Post({ post }: PostProps) {
+export default function Post() {
   return(
-    <>
-      <article>
-        <h1>{post.title}</h1>
-        <time>{post.updatedAt}</time>
-        <div dangerouslySetInnerHTML={{ __html: post.content }}/>
-      </article>
-    </>
+    <h1>trest</h1>
   )
 }
 
@@ -35,7 +20,7 @@ export const  getServerSideProps: GetServerSideProps = async ({ req, params }) =
 
   const prismic = getPrismicClient(req)
 
-  const response = await prismic.getByUID<any>('posts', String(slug), {})
+  const response = await prismic.getByID('publication', String(slug), {})
 
   const post = {
     slug,
@@ -46,11 +31,5 @@ export const  getServerSideProps: GetServerSideProps = async ({ req, params }) =
       month: 'long',
       year: 'numeric'
     })
-  }
-
-  return {
-    props: {
-      post,
-    }
   }
 }

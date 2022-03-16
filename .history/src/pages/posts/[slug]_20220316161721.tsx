@@ -19,7 +19,9 @@ export default function Post({ post }: PostProps) {
       <article>
         <h1>{post.title}</h1>
         <time>{post.updatedAt}</time>
-        <div dangerouslySetInnerHTML={{ __html: post.content }}/>
+        <div>
+          {post.content}  
+        </div>
       </article>
     </>
   )
