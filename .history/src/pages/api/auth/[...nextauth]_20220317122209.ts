@@ -45,7 +45,7 @@ export default NextAuth({
           )
         )
   
-            //ERRRRRRRRRRRRRRRRRRRRRRo no git
+  
         return {
           ...session,
           activeSubscription: userActiveSubscription
