@@ -1,11 +1,11 @@
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, GetStaticProps } from 'next'
 import { getSession } from 'next-auth/react'
 import { RichText } from 'prismic-dom'
-import { getPrismicClient } from '../../services/prismic'
-import styles from './post.module.scss'
+import { getPrismicClient } from '../../../services/prismic'
+import styles from '../post.module.scss'
 
 
-interface PostProps {
+interface PostPreviewProps {
   post: {
     slug: string;
     title: string;
@@ -14,36 +14,40 @@ interface PostProps {
   }
 }
 
-export default function Post({ post }: PostProps) {
+export default function PostPreview({ post }: PostPreviewProps) {
   return(
     <main className={styles.container}> 
       <article className={styles.post}>
         <h1>{post.title}</h1>
         <time>{post.updatedAt}</time>
         <div
-        className={styles.postContent}
+        className={`${styles.postContent} ${styles.previewContent}`}
         dangerouslySetInnerHTML={{ __html: post.content }}/>
+
+        <div className={styles.continueReading}>
+          wanna continue reding?
+          <Link>
+            <a href="">Subscribe now</a>
+          </Link> 
+        </div>
+
       </article>
     </main>
   )
 }
 
 
-export const  getServerSideProps: GetServerSideProps = async ({ req, params }) => {
-  const sessionActive = await getSession({ req })
+export const getStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: 'blocking'
+  }
+}
+
+export const  getStaticProps: GetStaticProps = async ({ params }) => {
   const { slug } = params;
 
-
-  if(!sessionActive.activeSubscription) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      }
-    }
-  }
-
-  const prismic = getPrismicClient(req)
+  const prismic = getPrismicClient()
 
   const response = await prismic.getByUID<any>('posts', String(slug), {})
 
@@ -51,7 +55,7 @@ export const  getServerSideProps: GetServerSideProps = async ({ req, params }) =
   const post = {
     slug,
     title: RichText.asText(response.data.title),
-    content: RichText.asHtml(response.data.content),
+    content: RichText.asHtml(response.data.content.splice(0, 3)),
     updatedAt: new Date(response.last_publication_date).toLocaleDateString('pt-BR', {
       day: '2-digit',
       month: 'long',
