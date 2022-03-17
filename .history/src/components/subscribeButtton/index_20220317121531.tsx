@@ -18,14 +18,7 @@ export function SubscribeButtton(priceId: SubscribeButttonProps) {
     if(!session) {
       signIn('github')
       return;
-    }
-
-    if (session.activeSubscription) {
-      router.push('/posts');
-
-      return;
-    }
-
+    } 
     //criação da checkout session
     try {
       const response = await api.post('/subscribe') //rota

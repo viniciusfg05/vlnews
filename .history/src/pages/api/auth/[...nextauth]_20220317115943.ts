@@ -19,43 +19,32 @@ export default NextAuth({
   ],
   callbacks: {
     async session({ session }) {
-      try {
-        const userActiveSubscription = await fauna.query(
-          //estamos pegando a ref do usuario pelo 'subscription_by_user_ref' , e encontrando a ref do usuario por email
-          q.Get( //pegar
-            //ver se combina a ref com o status active da assinatura
-            q.Intersection([ //para ver se combina os dois 
-              q.Match( //que bate
-                q.Index('subscription_by_user_ref'), //com index
-                q.Select( //seleciona //pegar o usuario pelo email
-                  "ref",
-                  q.Get( //pegar
-                    q.Match( //que bate
-                      q.Index('user-by-email'), //com esse index
-                      q.Casefold(session.user.email) //local do email
-                    )
+      const userActiveSubscription = await fauna.query(
+        //estamos pegando a ref do usuario pelo 'subscription_by_user_ref' , e encontrando a ref do usuario por email
+        q.Get( //pegar
+          //ver se combina a ref com o status active da assinatura
+          q.Intersection( //para ver se combina os dois 
+            q.Match( //que bate
+              q.Index('subscription_by_user_ref'), //com index
+              q.Select( //seleciona //pegar o usuario pelo email
+                "ref",
+                q.Get( //pegar
+                  q.Match( //que bate
+                    q.Index('user-by-email'), //com esse index
+                    q.Casefold(session.user.email) //local do email
                   )
                 )
-              ),
-              q.Match(
-                q.Index('subscription_by_status'),
-                "active"
               )
-            ])
+            ),
+            q.Match(
+              q.Index('subscription')
+            )
           )
         )
-  
-  
-        return {
-          ...session,
-          activeSubscription: userActiveSubscription
-        }
-      } catch {
-        return {
-          ...session,
-          activeSubscription: null
-        }
-      }
+      )
+
+
+      return session
     },
     async signIn({ user, account, profile }) {
       //inserção no banco de dados
