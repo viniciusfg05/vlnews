@@ -1,4 +1,4 @@
-import { GetServerSideProps, GetStaticProps } from 'next'
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next'
 import { useSession } from "next-auth/react"
 import Head from 'next/head'
 import Link from 'next/link'
@@ -56,7 +56,20 @@ export default function PostPreview({ post }: PostPreviewProps) {
   )
 }
 
+//so funciona nas [arquivos entre cochete] varias rotas
+//serve para informar quais paths quero gera um pagina static
 
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   return {
+//     paths: [
+//       {params: {slug: ''}}
+//     ],
+//     fallback: 'blocking' //pode recebe true, false e blocking
+//   }
+// }
+
+
+//gera a pagina static confirme as pessoas acessão
 export const getStaticPaths = () => {
   return {
     paths: [],
@@ -70,7 +83,6 @@ export const  getStaticProps: GetStaticProps = async ({ params }) => {
   const prismic = getPrismicClient()
 
   const response = await prismic.getByUID<any>('posts', String(slug), {})
-
 
   const post = {
     slug,
@@ -86,6 +98,7 @@ export const  getStaticProps: GetStaticProps = async ({ params }) => {
   return {
     props: {
       post,
-    }
+    },
+    revalidate: 60 * 30, //30 min
   }
 }
